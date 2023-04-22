@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Mascota = require("../models/mascotas");
+const ip = require("ip");
 
 // dinamic content index
 router.get("/", (req, res) => {
   //console.log("Respuesta del Servidor Render...");
+  console.log(`Escuchando en la IP ${ip.address()}`);
+  //res.end("Your IP address is " + ip.address());
   res.render("index", { titulo: "mi titulo dinámico - index" });
 });
 

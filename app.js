@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const puerto = process.env.PORT || 3000;
 const mongoose = require("mongoose");
+
+
 require('dotenv').config()
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.dmrgvjo.mongodb.net/${process.env.DB}`;
@@ -36,7 +38,8 @@ app.use((req, res, next) => {
   });
 });
 
-// server
+
+// server Puerto
 app.listen(puerto, () => {
   // console.log(__dirname);
   console.log(`Escuchando en el puerto ${puerto}`);
