@@ -1,6 +1,19 @@
 const express = require("express");
 const app = express();
 const puerto = process.env.PORT || 3000;
+const mongoose = require("mongoose");
+require('dotenv').config()
+
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.dmrgvjo.mongodb.net/${process.env.DB}`;
+
+// Conexión a BD
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Bases de datos contectada"))
+  .catch(e => console.log("Error Conexion BD:" + e));
 
 // Motor de plantilla
 app.set("view engine", "ejs");

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Mascota = require("../models/mascotas");
 
 // dinamic content index
 router.get("/", (req, res) => {
@@ -13,7 +14,21 @@ router.get("/servicios", (req, res) => {
   res.render("servicios", { titulo: "mi titulo dinámico - servicios" });
 });
 
-// dinamic content mascotas
+// dinamic content mascotas MongoDB
+router.get("/mascotas", async (req, res) => {
+  try {
+    const arrayMascotaDB = await Mascota.find();
+    //console.log("arrayMascotaDB" + arrayMascotaDB);
+    res.render("mascotas", {
+      titulo: "mi titulo dinámico - mascotas MongoDB",
+      arrayMascotas: arrayMascotaDB,
+    });
+  } catch (error) {
+    console.log("Error al tratar de obtener la colección :" + error);
+  }
+});
+
+// list
 router.get("/mascotas", (req, res) => {
   res.render("mascotas", {
     titulo: "mi titulo dinámico - servicios",
