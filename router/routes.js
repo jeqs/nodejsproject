@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Mascota = require("../models/mascotas");
-const ip = require("ip");
 
 // dinamic content index
 router.get("/", (req, res) => {
   //console.log("Respuesta del Servidor Render...");
-  console.log(`Escuchando en la IP ${ip.address()}`);
-  //res.end("Your IP address is " + ip.address());
   res.render("index", { titulo: "mi titulo dinámico - index" });
 });
 
@@ -27,11 +24,11 @@ router.get("/mascotas", async (req, res) => {
       arrayMascotas: arrayMascotaDB,
     });
   } catch (error) {
-    console.log("Error al tratar de obtener la colección :" + error);
+    console.log("Error al tratar de obtener la colección :", error);
   }
 });
 
-// list
+// list mascotas
 router.get("/mascotas", (req, res) => {
   res.render("mascotas", {
     titulo: "mi titulo dinámico - servicios",
@@ -40,6 +37,31 @@ router.get("/mascotas", (req, res) => {
       { id: 2, nombre: "boris", descripcion: "descripcion" },
     ],
   });
+});
+
+// list mascotas
+router.get("/crear", (req, res) => {
+  res.render("crear", {
+    titulo: "Crear - Mascota",
+  });
+});
+
+// list mascotas
+router.post("/crear", async (req, res) => {
+  const body = req.body;
+  //console.log(body);
+  try {
+    // metodo 1
+    // const mascotaDB = new Mascota(body);
+    // await mascotaDB.save();
+    //console.log("Mascota creada :", mascotaDB);
+
+    // metodo 2
+    await Mascota.create(body);
+    res.redirect("/mascotas");
+  } catch (error) {
+    console.log("Error al tratar de crear elemento de la colección :", error);
+  }
 });
 
 module.exports = router;

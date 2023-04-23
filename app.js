@@ -1,11 +1,17 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const puerto = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
-require('dotenv').config()
+// parse application/json
+app.use(bodyParser.json());
 
+// Env
+require("dotenv").config();
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.dmrgvjo.mongodb.net/${process.env.DB}`;
 
 // Conexión a BD
@@ -15,7 +21,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log("Bases de datos contectada"))
-  .catch(e => console.log("Error Conexion BD:" + e));
+  .catch((e) => console.log("Error Conexion BD:" + e));
 
 // Motor de plantilla
 app.set("view engine", "ejs");
@@ -37,7 +43,6 @@ app.use((req, res, next) => {
     descripcion: "ruta no encontrada",
   });
 });
-
 
 // server Puerto
 app.listen(puerto, () => {
