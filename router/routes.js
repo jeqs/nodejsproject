@@ -64,4 +64,72 @@ router.post("/crear", async (req, res) => {
   }
 });
 
+// list mascotas
+router.get("/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const mascotaDB = await Mascota.findOne({ _id: _id });
+    console.log("mascotaDB :", mascotaDB);
+    res.render("detalle", {
+      titulo: "mi titulo dinámico - detalle",
+      mascota: mascotaDB,
+      error: false,
+    });
+  } catch (error) {
+    res.render("detalle", {
+      titulo: "mi titulo dinámico - detalle",
+      error: true,
+      mensaje: "no se encuentra el registros",
+    });
+    console.log("No se encuentra elemento de la colección :", error);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const mascotaDB = await Mascota.findByIdAndDelete({ _id: _id });
+    if (mascotaDB) {
+      res.json({
+        estado: true,
+        mensaje: "Registro Eliminado",
+      });
+    } else {
+      res.json({
+        estado: false,
+        mensaje: "Registro No Eliminado",
+      });
+    }
+  } catch (error) {
+    console.log("No se encuentra elemento de la colección :", error);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  
+  const body = req.body;
+  const _id = req.params.id;
+  try {
+    const mascotaDB = await Mascota.findByIdAndUpdate(_id, body, { useFindAndModify: false });
+    console.log(mascotaDB);
+    if (mascotaDB) {
+      res.json({
+        estado: true,
+        mensaje: "Registro Editado",
+      });
+    } else {
+      res.json({
+        estado: false,
+        mensaje: "Registro No Editado",
+      });
+    }
+  } catch (error) {
+    //console.log("Error al tratar de crear elemento de la colección :", error);
+    res.json({
+      estado: false,
+      mensaje: "Registro No Editado",
+    });
+  }
+});
+
 module.exports = router;
